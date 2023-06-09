@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 
-//Note
 const notes = [
   {
     id: 1,
