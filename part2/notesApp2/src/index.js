@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import axios from 'axios';
 
-axios.get('http://localhost:3001/notes').then((res) => {
-  const notes = res.data;
-  console.log(notes);
-  ReactDOM.render(<App notes={notes} />, document.getElementById('root'));
-});
-// ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+// axios.get('http://localhost:3001/notes').then((res) => {
+//   const notes = res.data;
+//   console.log(notes);
+//   ReactDOM.render(<App notes={notes} />, document.getElementById('root'));
+// });
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 
 // const notes = [
 //   {
