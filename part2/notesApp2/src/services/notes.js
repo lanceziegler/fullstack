@@ -16,16 +16,15 @@ const update = (id, newObject) => {
   return request.then((response) => response.data);
 };
 
-// In ES6, you can just do:
-/*
-export default {
-getAll,create,update,
-}; 
-*/
-
 // The below makes it so you can customize the exported func names
+// export default {
+//   getAll: getAll,
+//   create: create,
+//   update: update,
+// };
+
 export default {
-  getAll: getAll,
-  create: create,
-  update: update,
+  getAll,
+  create,
+  update,
 };
