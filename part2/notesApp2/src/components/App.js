@@ -17,8 +17,7 @@ const App = (props) => {
   //   });
   // }, []);
   // console.log('render', notes.length, 'notes');
-  //TODO Change?
-  //!TEST
+
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
       setNotes(initialNotes);
