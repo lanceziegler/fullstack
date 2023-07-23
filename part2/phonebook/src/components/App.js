@@ -21,7 +21,7 @@ const App = () => {
     });
   }, []);
   console.log('render', persons.length, 'notes');
-  // comment
+
   const addPerson = (e) => {
     e.preventDefault();
 
