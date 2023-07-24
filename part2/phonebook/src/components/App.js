@@ -14,10 +14,12 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    console.log('effect');
-    axios.get('http://localhost:3001/persons').then((response) => {
-      console.log('promise fulfilled');
-      setPersons(response.data);
+    // axios.get('http://localhost:3001/persons').then((response) => {
+    //   console.log('promise fulfilled');
+    //   setPersons(response.data);
+    // });
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
   console.log('render', persons.length, 'notes');
@@ -26,16 +28,20 @@ const App = () => {
     e.preventDefault();
 
     const nameExists = persons.some((person) => person.name === newName);
-
+    const personObject = { name: newName, number: newNumber };
     if (nameExists) {
       alert(`${newName} is already in the phonebook!`);
     } else {
-      const personObject = { name: newName, number: newNumber };
       setPersons(persons.concat(personObject));
     }
 
-    setNewName('');
-    setNewNumber('');
+    personService.create(personObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName('');
+      setNewNumber('');
+    });
+    // setNewName('');
+    // setNewNumber('');
   };
 
   const handlePersonChange = (e) => {
