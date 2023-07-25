@@ -27,21 +27,39 @@ const App = () => {
   const addPerson = (e) => {
     e.preventDefault();
 
-    const nameExists = persons.some((person) => person.name === newName);
+    const existingPerson = persons.find((person) => person.name === newName);
     const personObject = { name: newName, number: newNumber };
-    if (nameExists) {
-      alert(`${newName} is already in the phonebook!`);
-    } else {
-      setPersons(persons.concat(personObject));
-    }
 
-    personService.create(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName('');
-      setNewNumber('');
-    });
-    // setNewName('');
-    // setNewNumber('');
+    if (existingPerson) {
+      const confirmUpdate = window.confirm(
+        `${newName} is already in the phonebook. Do you want to update the number?`
+      );
+
+      if (confirmUpdate) {
+        personService
+          .update(existingPerson.id, personObject)
+          .then((updatedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id === updatedPerson.id ? updatedPerson : person
+              )
+            );
+            setNewName('');
+            setNewNumber('');
+          })
+          .catch((error) => {
+            // Handle any error that occurs during the update process
+            console.log('Error updating person:', error);
+          });
+      }
+    } else {
+      // If the person does not exist, add them to the server and update the state
+      personService.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName('');
+        setNewNumber('');
+      });
+    }
   };
 
   const handlePersonChange = (e) => {
@@ -56,6 +74,15 @@ const App = () => {
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleDelete = (id, name) => {
+    const confirmDelete = window.confirm(`Delete ${name}?`);
+    if (confirmDelete) {
+      personService.remove(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
   };
 
   const filteredPersons = persons.filter((person) =>
@@ -83,6 +110,12 @@ const App = () => {
       {filteredPersons.map((person) => (
         <div key={person.name}>
           {person.name} {person.number}
+          <button
+            style={{ marginLeft: '20px' }}
+            onClick={() => handleDelete(person.id, person.name)}
+          >
+            delete
+          </button>
         </div>
       ))}
     </div>
