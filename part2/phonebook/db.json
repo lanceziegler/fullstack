@@ -11,14 +11,19 @@
       "id": 3
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
       "name": "Elmo Redington",
       "number": "523-124423-423",
       "id": 5
+    },
+    {
+      "name": "Lance Ziegler",
+      "number": "434-2424-2453",
+      "id": 6
+    },
+    {
+      "name": "Caroline White",
+      "number": "858-353-7083",
+      "id": 7
     }
   ]
 }
