@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Note from './Note';
+import Notification from './Notification';
 import axios from 'axios';
 import noteService from '../services/notes';
 
@@ -8,6 +9,7 @@ const App = (props) => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('some error happened...');
 
   // useEffect(() => {
   //   console.log('effect');
@@ -26,7 +28,7 @@ const App = (props) => {
 
   const toggleImportanceOf = (id) => {
     // console.log('importance of ' + id + ' needs to be toggled');
-    const url = `http://localhost:3001/notes/${id}`;
+    // const url = `http://localhost:3001/notes/${id}`;
     const note = notes.find((n) => n.id === id);
     const changedNote = { ...note, important: !note.important };
 
@@ -38,7 +40,12 @@ const App = (props) => {
         notes
           .map((note) => (note.id !== id ? note : returnedNote))
           .catch((error) => {
-            alert(`the note '${note.content}' was already deleted from server`);
+            setErrorMessage(
+              `Note '${note.content}' was already removed from server`
+            );
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
             setNotes(notes.filter((n) => n.id !== id));
           })
       );
@@ -76,6 +83,7 @@ const App = (props) => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all'}
