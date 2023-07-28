@@ -35,21 +35,20 @@ const App = (props) => {
     // axios.put(url, changedNote).then((response) => {
     //   setNotes(notes.map((n) => (n.id !== id ? n : response.data)));
     // });
-    noteService.update(id, changedNote).then((returnedNote) => {
-      setNotes(
-        notes
-          .map((note) => (note.id !== id ? note : returnedNote))
-          .catch((error) => {
-            setErrorMessage(
-              `Note '${note.content}' was already removed from server`
-            );
-            setTimeout(() => {
-              setErrorMessage(null);
-            }, 5000);
-            setNotes(notes.filter((n) => n.id !== id));
-          })
-      );
-    });
+    noteService
+      .update(id, changedNote)
+      .then((returnedNote) => {
+        setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+      })
+      .catch((error) => {
+        setErrorMessage(
+          `Note '${note.content}' was already removed from server`
+        );
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+        setNotes(notes.filter((n) => n.id !== id));
+      });
   };
 
   const addNote = (event) => {
