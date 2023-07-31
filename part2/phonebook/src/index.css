@@ -1,0 +1,23 @@
+.contacts {
+  color: green;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+  max-width: 20rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn {
+  border: 2px solid red;
+  border-radius: 10px;
+}
+
+.update {
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border: 3px solid darkgreen;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}

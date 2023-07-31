@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Note from './Note';
+import Footer from './Footer';
 import Notification from './Notification';
 import axios from 'axios';
 import noteService from '../services/notes';
@@ -9,7 +10,7 @@ const App = (props) => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('some error happened...');
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // useEffect(() => {
   //   console.log('effect');
@@ -101,6 +102,7 @@ const App = (props) => {
         <input value={newNote} onChange={handleNoteChange} />
         <button type='submit'>save</button>
       </form>
+      <Footer />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import personService from '../services/persons';
+import Notification from './Notification';
 
 const App = () => {
   // const [persons, setPersons] = useState([
@@ -12,6 +13,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [notication, setNotification] = useState(null);
 
   useEffect(() => {
     // axios.get('http://localhost:3001/persons').then((response) => {
@@ -44,6 +46,7 @@ const App = () => {
                 person.id === updatedPerson.id ? updatedPerson : person
               )
             );
+            setNotification(`${newName}'s number has been updated`);
             setNewName('');
             setNewNumber('');
           })
@@ -56,6 +59,7 @@ const App = () => {
       // If the person does not exist, add them to the server and update the state
       personService.create(personObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
+        setNotification(`${newName} was added to the phonebook`);
         setNewName('');
         setNewNumber('');
       });
@@ -79,9 +83,16 @@ const App = () => {
   const handleDelete = (id, name) => {
     const confirmDelete = window.confirm(`Delete ${name}?`);
     if (confirmDelete) {
-      personService.remove(id).then(() => {
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      personService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {
+          setNotification('This contact does not exist!');
+          setPersons(persons.filter((person) => person.id !== id));
+        });
+      setNotification(`${name} has been deleted.`);
     }
   };
 
@@ -92,6 +103,7 @@ const App = () => {
   return (
     <div>
       <div>debug: {newName}</div>
+      <Notification message={notication} />
       <h2>Phonebook</h2>
       Search: <input value={searchTerm} onChange={handleSearch}></input>
       <h2>Add New Contact</h2>
@@ -108,11 +120,12 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {filteredPersons.map((person) => (
-        <div key={person.name}>
+        <div key={person.name} className='contacts'>
           {person.name} {person.number}
           <button
             style={{ marginLeft: '20px' }}
             onClick={() => handleDelete(person.id, person.name)}
+            className='btn'
           >
             delete
           </button>
