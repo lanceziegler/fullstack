@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+//TODO Middleware 1
 app.use(express.json());
 
 let notes = [
@@ -25,6 +26,24 @@ let notes = [
     important: true,
   },
 ];
+
+//! ********* Middleware that prints information about every request that is sent to the server.
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method);
+  console.log('Path:  ', request.path);
+  console.log('Body:  ', request.body);
+  console.log('---');
+  next();
+};
+//! This middleware will be used for catching requests made to non-existent routes. For these requests, the middleware will return an error message in the JSON format.
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' });
+};
+//TODO Middleware2
+app.use(unknownEndpoint);
+//! Note about Middleware order
+//*** Middleware functions are called in the order that they're taken into use with the express server object's use method. Notice that json-parser is taken into use before the requestLogger middleware, because otherwise request.body will not be initialized when the logger is executed! */
+app.use(requestLogger);
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World</h1>');
@@ -76,6 +95,9 @@ app.delete('/api/notes/:id', (request, response) => {
 
   response.status(204).end();
 });
+
+//TODO Middleware3
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT, () => {
