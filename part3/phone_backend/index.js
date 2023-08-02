@@ -1,7 +1,27 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
 
 app.use(express.json());
+app.use(morgan('tiny'));
+
+// Not outputting to console
+// // Custom token to log request body for POST requests
+// morgan.token('post-data', (req) => {
+//   if (req.method === 'POST') {
+//     return JSON.stringify(req.body);
+//   }
+//   return '';
+// });
+
+// // Using 'combined' format along with the custom token to log both standard and request body information
+// app.use(
+//   morgan('combined', {
+//     skip: (req, res) => res.statusCode < 400,
+//     stream: process.stdout,
+//   })
+// );
+// /Not outputting to console
 
 let persons = [
   {
